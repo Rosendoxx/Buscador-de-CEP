@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar CEP</title>
+    <style>
+        h1{
+            color: #0069e0;
+        }
+        header{
+            text-align: center;
+            margin: 2em;
+            margin-bottom: 5em;
+        }
+        input{
+            margin-bottom: 1em;
+        }
+        div{
+            text-align: center;
+        }
+        table{
+            margin: auto;
+            width: 50%;
+        }
+        th{
+            
+            background-color: #0069e0;
+            color: #fff;
+        }
+        td{
+            background-color: antiquewhite;
+            height: 2em;
+            line-height: 2em;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <header>
+            <h1>Busca CEP</h1>
+            <label>Digite um CEP ou um Endereço:<br><input id="cep" type="text" placeholder="Não utilize nº da casa/apto/lote/prédio ou abreviação" required></label><br>
+            <button id="butao" onclick="consultarCep()">Buscar</button>
+        </header>
+        <article>
+            <table>
+                <tr>
+                    <th>Logradouro/Nome</th>
+                    <th>Bairro/Distrito</th>
+                    <th>Localidade/UF</th>
+                    <th>CEP</th>
+                </tr>
+                <tr>
+                    <td id="logradouro"> </td>
+                    <td id="Bairro"></td>
+                    <td id="uf"></td>
+                    <td id="ceep"></td>
+                </tr>
+            </table>
+        </article>
+    </div>
+    <script>
+        let cepNumero;
+        function consultarCep(){
+            let cep = document.getElementById("cep").value;
+            cepNumero = parseInt(cep);
+            fetch(`https://viacep.com.br/ws/${cepNumero}/json/`)
+                .then(response => {
+                    return response.json()
+                })
+                .then(dados => {
+                    document.getElementById("logradouro").innerText  = (dados.logradouro)
+                    document.getElementById("Bairro").innerText = (dados.bairro)
+                    document.getElementById("uf").innerText = (dados.localidade +"/"+ dados.uf)
+                    document.getElementById("ceep").innerText = (dados.cep)
+                })
+                .catch(erro => {
+
+                })
+        }
+    </script>
+</body>
+</html>
